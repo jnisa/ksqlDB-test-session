@@ -9,9 +9,9 @@ CREATE STREAM readings (sensor VARCHAR KEY, reading DOUBLE, location VARCHAR)
 WITH (kakfa_topic = 'readings', value_format = 'json', partitions = '3')
 ````
 
-By looking to the query above we can check that we are against a schema with three columns: `sensor`, `reading`, and `location`. The types are exactly as stated above: strings (VARCHAR) and a double. It's important to mention that the sensor is marked with the KEY keyword.
-There's also additional metadata: the command that specifies the underlying Kafka topic where the data will be stored (readings), along with the serialization format (JSON) and the number of partitions. But what happens internally when you issue this SQL at the ksqlDB command line?
-The ksqlDB servers communicate directly with your Kafka brokers. If the underlying topic doesn't exist, it gets created by Kafka. The additional metadata, like the types, gets stored in ksqlDB's object catalog. So after executing the command above, you now have a Kafka topic (called `readings`) with three empty partitions.
+By looking to the query above we can check that we are against a schema with three columns: `sensor`, `reading`, and `location`. The types are exactly as stated above: strings (VARCHAR) and a double. It's important to mention that the sensor is marked with the KEY keyword. <br>
+There's also additional metadata: the command that specifies the underlying Kafka topic where the data will be stored (readings), along with the serialization format (JSON) and the number of partitions. But what happens internally when you issue this SQL at the ksqlDB command line? <br>
+The ksqlDB servers communicate directly with your Kafka brokers. If the underlying topic doesn't exist, it gets created by Kafka. The additional metadata, like the types, gets stored in ksqlDB's object catalog. So after executing the command above, you now have a Kafka topic (called `readings`) with three empty partitions.<br>
 
 ### **2. Queries**
 

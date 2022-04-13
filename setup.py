@@ -9,7 +9,7 @@ setup(
     name = 'ksqldb-test-session',
     version = '0.1',
     description = 'Test Stage for the ksqlDB',
-    package = find_package(),
+    packages = find_packages(),
     author = 'João Nisa',
-    include_package_data = True,
+    include_package_data = True
 )
