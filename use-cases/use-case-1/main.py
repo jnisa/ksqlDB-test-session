@@ -10,6 +10,11 @@
 
 import os
 from utils.converter import csv_to_dict, json_creator
+from client.ksql import (create_mt_view,
+    create_stream,
+    create_table, 
+    insert_values
+    )
 
 
 # getting the current directory

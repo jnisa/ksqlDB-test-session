@@ -6,7 +6,7 @@ import json
 
 
 
-def csv_to_dict(csv_asset: str, path: str, locator: list, key_col: str, data = {}) -> dict:
+def csv_to_dict(csv_asset: str, path: str, locator: list, key_col: str, data = []) -> dict:
     
     '''
     reads the records from the csv file and converts them to a python dictionary
@@ -20,8 +20,9 @@ def csv_to_dict(csv_asset: str, path: str, locator: list, key_col: str, data = {
     with open(os.path.join(path, '/'.join(locator), csv_asset)) as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for rows in csv_reader:
-            id = rows[key_col]
-            data[id] = dict((key,value) for key, value in rows.items() if not key == key_col)
+            data.append(rows)
+            # id = rows[key_col]
+            # data[id] = dict((key,value) for key, value in rows.items() if not key == key_col)
 
     return data
 
