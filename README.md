@@ -15,4 +15,33 @@ To this _testing stage_ we will use a Docker container with Kafka installed on i
 
 It is important to take care of the installation of the next modules:
 
+### . Create a Kafka Topic and create a table from it
+
+Access to the Kafka server throughout the following command:
+
+````
+docker exec -it --priviliged --user root [CONTAINER_ID] /bin/sh
+````
+
+Inside the docker container, create a topic throughout the following command:
+
+````
+kafka-topics --bootstrap-server localhost:29092 --create --if-not-exists --topic my-topic-1 --replication-factor 1 --partitions 1
+````
+
+We have created the topic with random features, this must be brought into consideration before the creation moment.
+
+With a kafka topic created, we can now create a table and add records to it throughout the following commands:
+
+````
+CREATE TABLE riderLocations
+    (profile VARCHAR PRIMARY KEY,
+    latitude DOUBLE
+    longitude DOUBLE)
+   WITH (KAFKA_TOPIC = 'my-topic-1', VALUE_FORMAT='JSON');
+
+INSERT INTO riderLocations (profileId, latitude, longitude) VALUES ('c2309eec', 37.7877, -122.4205);
+INSERT INTO riderLocations (profileId, latitude, longitude) VALUES ('18f4ea86', 37.3903, -122.0643);
+````
+
 

@@ -1,0 +1,5 @@
+{
+    "str": "VARCHAR",
+    "int": "INT",
+    "bool": "BOOL"
+}

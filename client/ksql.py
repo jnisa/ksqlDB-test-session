@@ -1,7 +1,5 @@
 
 
-import pdb
-
 
 def create_mt_views(mt_view_id: str, sub_query: str) -> str:
 
@@ -38,7 +36,7 @@ def create_stream(stream_id: str, columns: tuple, dtypes: tuple, topic: str, in_
     return query
 
 
-def create_table(table_id: str, columns: tuple, dtypes: tuple, topic: str, in_format: str, key_col: str, col_str = '') -> str:
+def create_table(table_id: str, columns: tuple, dtypes: tuple, topic: str, in_format: str, key_col: str, q_col = []) -> str:
 
     '''
     creates a table on the ksqlDB
@@ -52,9 +50,12 @@ def create_table(table_id: str, columns: tuple, dtypes: tuple, topic: str, in_fo
     '''
 
     for val in zip(columns, dtypes):
-        col_str += ' %s %s ' %(val[0], val[1])
+        if val[0] == key_col:
+            q_col.append(' %s %s PRIMARY KEY' %(val[0], val[1]))
+        else:
+            q_col.append(' %s %s ' %(val[0], val[1]))
 
-    query = '''CREATE TABLE %s (%s) WITH (KAFKA_TOPIC = '%s', VALUE_FORMAT='%s', KEY = '%s');''' %(table_id, col_str, topic, in_format, key_col)
+    query = '''CREATE TABLE IF NOT EXISTS %s (%s) WITH (KAFKA_TOPIC = '%s', VALUE_FORMAT='%s');''' %(table_id, ','.join(q_col), topic, in_format)
 
     return query
 
