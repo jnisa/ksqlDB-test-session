@@ -1,5 +1,5 @@
 
-import pdb
+
 import os
 import json
 
@@ -44,16 +44,15 @@ path = cur_dir.split('/')[:-2]
 f = open(os.path.join('/'.join(path), 'confs', 'py_to_kafka.json'))
 map = json.load(f)
 
-# create the required tables
+# create the required tables with data
 for t in list(csv_to_convert.keys())[1::]:
 
     cols, dtyp = get_schema(get_sample(os.path.join(cur_dir, '/'.join(landing), csv_to_convert[t])), map)
     vals = get_records(os.path.join(cur_dir, '/'.join(landing), csv_to_convert[t]))
 
-    print('query: ', create_table(t[:-4], cols, dtyp, topic, data_format, cols[0]))
-
-    client.query(create_table(t[:-4], cols, dtyp, topic, data_format, cols[0]))
-    #client.query(insert_values(t[:-4], cols, vals))
+    client.ksql(create_table(t[:-4], cols, dtyp, topic, data_format, cols[0]))
+    for v in vals:
+        client.ksql(insert_values(t[:-4], tuple(cols), v))
 
 
 # create stream
