@@ -36,7 +36,7 @@ def create_stream(stream_id: str, columns: tuple, dtypes: tuple, topic: str, in_
     return query
 
 
-def create_table(table_id: str, columns: tuple, dtypes: tuple, topic: str, in_format: str, key_col: str, q_col = []) -> str:
+def create_table(table_id: str, columns: tuple, dtypes: tuple, topic: str, in_format: str, partitions: int, key_col: str,) -> str:
 
     '''
     creates a table on the ksqlDB
@@ -46,8 +46,11 @@ def create_table(table_id: str, columns: tuple, dtypes: tuple, topic: str, in_fo
     :param dtypes: tuple with the column data types
     :param topic: kafka topic where the table will be created
     :param in_format: format of the input data
+    :param partitions: number of kafka partitions
     :param key_col: key column from the input
     '''
+
+    q_col = []
 
     for val in zip(columns, dtypes):
         if val[0] == key_col:
@@ -55,7 +58,7 @@ def create_table(table_id: str, columns: tuple, dtypes: tuple, topic: str, in_fo
         else:
             q_col.append(' %s %s ' %(val[0], val[1]))
 
-    query = '''CREATE TABLE IF NOT EXISTS %s (%s) WITH (KAFKA_TOPIC = '%s', VALUE_FORMAT='%s');''' %(table_id, ','.join(q_col), topic, in_format)
+    query = '''CREATE TABLE IF NOT EXISTS %s (%s) WITH (KAFKA_TOPIC='%s', PARTITIONS=%s, VALUE_FORMAT='%s');''' %(table_id, ','.join(q_col), topic, partitions, in_format)
 
     return query
 
@@ -70,7 +73,7 @@ def insert_values(table_id: str, columns: tuple, values: tuple) -> str:
     :param values: tuple with the column values
     '''
 
-    query = '''INSERT INTO %s %s VALUES %s;''' %(table_id, columns, values)
+    query = "INSERT INTO %s (" %(table_id) + ", ".join(columns) + ")  VALUES %s;" %(str(values))
 
     return query
 

@@ -23,7 +23,6 @@ cur_dir = os.getcwd()
 # universal variables definition
 source = ['data', '1-raw-data']
 landing = ['data', '2-curated-data']
-topic = 'first-topic'
 data_format = 'JSON'
 
 # map input files: output files
@@ -50,7 +49,12 @@ for t in list(csv_to_convert.keys())[1::]:
     cols, dtyp = get_schema(get_sample(os.path.join(cur_dir, '/'.join(landing), csv_to_convert[t])), map)
     vals = get_records(os.path.join(cur_dir, '/'.join(landing), csv_to_convert[t]))
 
-    client.ksql(create_table(t[:-4], cols, dtyp, topic, data_format, cols[0]))
+    # for test purposes we are forcing the 'token_id' as primary column
+    if 'token_id' in cols:
+        p_key = 'token_id'
+    else: 
+        p_key = cols[0]
+    client.ksql(create_table(t[:-4], cols, dtyp, t[:-4], data_format, 1, p_key))
     for v in vals:
         client.ksql(insert_values(t[:-4], tuple(cols), v))
 
