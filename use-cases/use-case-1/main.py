@@ -1,5 +1,5 @@
 
-
+import pdb
 import os
 import json
 
@@ -7,6 +7,7 @@ from ksql import KSQLAPI
 
 from utils.converter import csv_to_dict, json_creator
 from utils.disruptor import get_sample, get_schema, get_records
+from utils.auxiliar import read_sql
 from client.kafka import create_topic
 from client.ksql import (create_mt_views,
     create_stream,
@@ -52,4 +53,11 @@ for t in list(features.keys()):
         client.ksql(insert_values(t[:-4], tuple(cols), v))
 
 
-# create stream
+# perfom the joins
+q1 = read_sql(os.path.join(cur_dir, 'ddl', 'setup'), 'join1.sql')
+# q2 = read_sql(os.path.join(cur_dir, 'ddl', 'setup'), 'join2.sql')
+# q3 = read_sql(os.path.join(cur_dir, 'ddl', 'setup'), 'join3.sql')
+
+client.ksql('%s' %(q1.replace(';', '')))
+# client.ksql('%s' %(q1.replace(';', '')))
+# client.ksql('%s' %(q1.replace(';', '')))
