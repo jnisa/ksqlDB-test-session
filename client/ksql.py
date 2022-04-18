@@ -15,7 +15,7 @@ def create_mt_views(mt_view_id: str, sub_query: str) -> str:
     return query
 
 
-def create_stream(stream_id: str, columns: tuple, dtypes: tuple, topic: str, in_format: str, parts: int, col_str = '') -> str:
+def create_stream(stream_id: str, columns: tuple, dtypes: tuple, topic: str, in_format: str, parts: int) -> str:
 
     '''
     create a stream on the ksqlDB 
@@ -28,10 +28,12 @@ def create_stream(stream_id: str, columns: tuple, dtypes: tuple, topic: str, in_
     :param parts: number of partitions of the stream
     '''
 
-    for val in zip(columns, dtypes):
-        col_str += ' %s %s ' %(val[0], val[1])
+    q_col = []
 
-    query = '''CREATE STREAM %s (%s) WITH (KAFKA_TOPIC = '%s', VALUE_FORMAT='%s', PARTITIONS = %s);''' %(stream_id, col_str, topic, in_format, parts)
+    for val in zip(columns, dtypes):
+        q_col.append(' %s %s ' %(val[0], val[1]))
+
+    query = '''CREATE STREAM IF NOT EXISTS %s (%s) WITH (KAFKA_TOPIC = '%s', VALUE_FORMAT='%s', PARTITIONS = %s);''' %(stream_id, ','.join(q_col), topic, in_format, parts)
 
     return query
 

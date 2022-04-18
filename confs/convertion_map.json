@@ -5,10 +5,10 @@
     },
     "transaction_request.csv": {
         "output": "transaction_request.json",
-        "primary_key": "token_id"
+        "primary_key": "flow_id"
     },
-    "transaction.csv": {
-        "output": "transaction.json",
+    "transaction_dim.csv": {
+        "output": "transaction_dim.json",
         "primary_key": "transaction_id"
     }
 }

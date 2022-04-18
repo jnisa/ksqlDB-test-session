@@ -13,7 +13,7 @@ def read_sql(joins_dir: str, ddl: str) -> str:
     :param ddl: file that handles the necessary queries
     '''
 
-    f = open(os.path.join(joins_dir, 'join1.sql'))
+    f = open(os.path.join(joins_dir, ddl))
     sql_join = f.read().replace('\n', ' ')
     f.close()
 
