@@ -26,7 +26,7 @@ In order to enable it, we had to install the ksql python library on the broker n
 pip3 install ksql
 ````
 
-**NOTE**: This modification must be commited in order to add this library to the docker image.
+**NOTE**: This modification was commited in order to add this library to the docker image.
 
 ### **4. Minor Fixes**
 
@@ -44,7 +44,7 @@ Please bear in mind, that this script must replace the one already existent.
 
 After the steps highlighted in the last two sections, the environment can be considered up to the taks that this use case requires.
 
-**NOTE**: This modification must be commited in order to add this library to the docker image.
+**NOTE**: This modification was commited in order to add this library to the docker image.
 
 ### **5. Use Case Keypoints**
 
@@ -90,3 +90,8 @@ Runtime statistics by host
 > d. Don't create multiple tables allocated to the same kafka topic, that will impact the joining operations. One topic per table;
 
 > e. Don't manage kafka topics (creation, deletion and so on..) on the kafka broker, do it through the ksql client.
+
+
+### B. Organization of the Use Case
+
+**[TO BE COMPLETED]**
