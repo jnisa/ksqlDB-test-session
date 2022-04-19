@@ -39,7 +39,6 @@ pip3 install ksql
 
 This modifications were then committed to the kafka broker new image.
 
-
 ### **4. Project Tree**
 
 This project is subdivided/organized into the following modules:
@@ -61,6 +60,15 @@ This project is subdivided/organized into the following modules:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This module has also submodules, one dedicated to the queries used on the course of each use case (`/ddl`) and one to the data used in each challenge (`/data`).
 
 - [`/utils`](/utils/), the storage unit of all the python auxiliar methods;  
+
+### **5. Command to Trigger the ksql client**
+
+The start the ksql client, we must use the following commmand:
+
+````
+docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
+````
+
 
 ### **A. Most used commands on the Kafka broker**
 

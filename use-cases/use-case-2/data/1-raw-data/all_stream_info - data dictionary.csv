@@ -1,0 +1,33 @@
+Sr No.,Column name,Description
+1,liveStreamID,stream unique ID
+2,beginTime,stream begin time
+3,endTime,stream end time
+4,duration,stream duration in sec
+5,closeBy,How the stream ended
+6,maxLiveViewerCount,At any point what was the max viewer count
+7,maxLiveViewerTime,time at which max viewers were live
+8,privateLiveStream,-
+9,receivedLikeCount,number of likes received
+10,streamerType,"streamerType
+0 - LiveStream
+1 - Show
+2 - replay"
+11,isShow,-
+12,cultureGroup,-
+13,userID,unique id of streamer
+14,registerTime,streamer app register time
+15,registerCountry,streamer app register country
+16,isContracted,streamer is in contract or not
+17,uniqueViewerCount,unique viewer count
+18,ios,viewer from ios
+19,android,viewer from android
+20,durationGTE5sec,viewer count who stayed greater than 5 sec
+21,durationGTE2min,viewer count who stayed greater than 2 min
+22,durationGTE10min,viewer count who stayed greater than 10 min
+23,totalViewerDuration,totalViewerDuration
+24,avgViewerDuration,avgViewerDuration
+25,avgStreamJoinDuration,avgStreamJoinDuration by viewers
+26,count,total comment count
+27,followIncreaseEstimated,Number of followers added while streaming
+28,receivePointEstimated,Total Points received.
+29,dau,DAU
