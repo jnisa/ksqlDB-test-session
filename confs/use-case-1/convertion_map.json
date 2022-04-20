@@ -1,0 +1,14 @@
+{
+    "payment_instrument_token_data.csv": {
+        "output": "payment_instrument_token_data.json",
+        "primary_key": "token_id"
+    },
+    "transaction_request.csv": {
+        "output": "transaction_request.json",
+        "primary_key": "flow_id"
+    },
+    "transaction_dim.csv": {
+        "output": "transaction_dim.json",
+        "primary_key": "transaction_id"
+    }
+}

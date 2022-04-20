@@ -1,0 +1,8 @@
+{
+    "all_stream_info.csv": {
+        "output": "all_stream_info.json"
+    },
+    "points_transaction_log.csv": {
+        "output": "points_transaction_log.json"
+    }
+}

@@ -34,7 +34,7 @@ conf_path = os.path.join('/'.join(cur_dir.split('/')[:-2]), 'confs')
 f = open(os.path.join(conf_path, 'py_to_kafka.json'))
 map = json.load(f)
 
-c = open(os.path.join(conf_path, 'convertion_map.json'))
+c = open(os.path.join(conf_path, 'use-case-1', 'convertion_map.json'))
 features = json.load(c)
 
 
