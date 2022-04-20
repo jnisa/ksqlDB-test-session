@@ -1,8 +1,12 @@
 {
     "all_stream_info.csv": {
-        "output": "all_stream_info.json"
+        "output": "all_stream_info.json",
+        "timestamp_ref_col": "beginTime",
+        "timestamp_format": "yyyy-MM-dd''T''HH:mm:ssX"
     },
     "points_transaction_log.csv": {
-        "output": "points_transaction_log.json"
+        "output": "points_transaction_log.json",
+        "timestamp_ref_col": "utcTimestamp",
+        "timestamp_format": "yyyy-MM-dd''T''HH:mm:ssX"
     }
 }

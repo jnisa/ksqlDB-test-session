@@ -4,7 +4,7 @@ import os
 import json
 import time
 
-# from ksql import KSQLAPI
+from ksql import KSQLAPI
 
 from utils.converter import csv_to_dict, json_creator
 from utils.disruptor import get_sample, get_schema, get_records
@@ -17,7 +17,7 @@ from client.ksql import (create_mt_views,
 
 
 # get a ksql client
-# client = KSQLAPI('http://ksqldb-server:8088')
+client = KSQLAPI('http://ksqldb-server:8088')
 
 # getting the current directory
 cur_dir = os.getcwd()
@@ -45,12 +45,37 @@ for key in iter(features):
 
 # create the ksql stream for the streaming dimension
 vals = {}
+cols = {}
 
 for v in [v[1]['output'] for v in features.items()]:
-    cols, dtyp = get_schema(get_sample(os.path.join(cur_dir, '/'.join(landing), v)), map)
+    stream_cols, dtyp = get_schema(get_sample(os.path.join(cur_dir, '/'.join(landing), v)), map)
+    cols[v[:-5]] = stream_cols
     stream_vals = get_records(os.path.join(cur_dir, '/'.join(landing), v))
-    # client.ksql(create_stream(v[:-5], cols, dtyp, v[:-5], data_format, 1))
+    client.ksql(create_stream(v[:-5], stream_cols, dtyp, v[:-5], data_format, 1, 
+        ", timestamp='%s', timestamp_format='%s'" %(
+            features[v.replace('json', 'csv')]['timestamp_ref_col'], 
+            features[v.replace('json', 'csv')]['timestamp_format']
+            )
+        ).replace('duration VARCHAR', 'duration BIGINT').replace('point VARCHAR', 'point BIGINT')
+    )
     vals[v[:-5]] = stream_vals
 
+# create the tables with the window function
+client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query1.sql')))
+client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query2.sql')))
+
 # mock a data streaming process with the values collected previously
+for k in vals.keys():
+    for idx, v in enumerate(vals[k]):
+        v = list(v)
+        if k == 'all_stream_info':
+            v[3] = int(v[3])
+            v = tuple(v)
+        else:
+            v[6] = int(v[6])
+            v = tuple(v)
+
+        client.ksql(insert_values(k, tuple(cols[k]), v))
+
+    break
 
