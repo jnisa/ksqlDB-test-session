@@ -1,7 +1,5 @@
-CREATE TABLE STREAM_INFO_AGG AS
-    SELECT 
-        USERID,
-        SUM(DURATION) AS SUM_DURATION
-    FROM ALL_STREAM_INFO
-    WINDOW TUMBLING (SIZE 1 DAY)
-    GROUP BY USERID;
+CREATE STREAM IF NOT EXISTS all_stream_info_rekeyed 
+    WITH (KAFKA_TOPIC = 'all_stream_info_rekeyed') AS
+    SELECT *
+    FROM all_stream_info
+    PARTITION BY USERID;

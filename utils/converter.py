@@ -6,7 +6,7 @@ import json
 
 
 
-def csv_to_dict(csv_asset: str, path: str, locator: list) -> dict:
+def csv_to_dict(csv_asset: str, path: str, locator: list, key_col = None) -> dict:
     
     '''
     reads the records from the csv file and converts them to a python dictionary
@@ -17,16 +17,21 @@ def csv_to_dict(csv_asset: str, path: str, locator: list) -> dict:
     :param key_col: column from the data that will be used as key of the json 
     '''
 
-    data = []
+    if key_col is None:
+        data = []
+    else: 
+        data = {}
 
     with open(os.path.join(path, '/'.join(locator), csv_asset)) as csv_file:
         csv_reader = csv.DictReader(csv_file)
-        for rows in csv_reader:
-            data.append(rows)
+        for rows in csv_reader:            
+            if key_col is None:
+                data.append(rows)
 
-            # to add this part of the code key_col: str needs to be provided as an input of the function
-            # id = rows[key_col]
-            # data[id] = dict((key,value) for key, value in rows.items() if not key == key_col)
+            else: 
+                # create a key:value json if a key_col is provided
+                id = rows[key_col]
+                data[id] = dict((key,value) for key, value in rows.items() if not key == key_col)
 
     return data
 

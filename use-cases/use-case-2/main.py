@@ -26,6 +26,7 @@ cur_dir = os.getcwd()
 source = ['data', '1-raw-data']
 landing = ['data', '2-curated-data']
 data_format = 'JSON'
+stream_parts = 6 
 
 
 # configuration files
@@ -43,39 +44,31 @@ for key in iter(features):
     recs = csv_to_dict(key, cur_dir, source)
     json_creator(cur_dir, landing, recs, features[key]['output'])
 
+
 # create the ksql stream for the streaming dimension
 vals = {}
 cols = {}
 
 for v in [v[1]['output'] for v in features.items()]:
     stream_cols, dtyp = get_schema(get_sample(os.path.join(cur_dir, '/'.join(landing), v)), map)
-    cols[v[:-5]] = stream_cols
     stream_vals = get_records(os.path.join(cur_dir, '/'.join(landing), v))
-    client.ksql(create_stream(v[:-5], stream_cols, dtyp, v[:-5], data_format, 1, 
-        ", timestamp='%s', timestamp_format='%s'" %(
-            features[v.replace('json', 'csv')]['timestamp_ref_col'], 
-            features[v.replace('json', 'csv')]['timestamp_format']
-            )
-        ).replace('duration VARCHAR', 'duration BIGINT').replace('point VARCHAR', 'point BIGINT')
-    )
+    client.ksql(create_stream(v[:-5], stream_cols, dtyp, v[:-5], data_format, stream_parts))
+    cols[v[:-5]] = stream_cols
     vals[v[:-5]] = stream_vals
 
-# create the tables with the window function
+
+# create the streams and tables with the window function
 client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query1.sql')))
 client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query2.sql')))
+client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query3.sql')))
+client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query4.sql')))
+
 
 # mock a data streaming process with the values collected previously
 for k in vals.keys():
     for idx, v in enumerate(vals[k]):
-        v = list(v)
-        if k == 'all_stream_info':
-            v[3] = int(v[3])
-            v = tuple(v)
-        else:
-            v[6] = int(v[6])
-            v = tuple(v)
-
         client.ksql(insert_values(k, tuple(cols[k]), v))
 
-    break
+    print('The stream %s has values already!' %(k))
+
 

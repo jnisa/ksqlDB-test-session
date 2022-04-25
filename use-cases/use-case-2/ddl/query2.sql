@@ -1,7 +1,5 @@
-CREATE TABLE TRANSACTION_LOG_AGG AS
-    SELECT 
-        USERID,
-        SUM(POINT)
-    FROM POINTS_TRANSACTION_LOG
-    WINDOW TUMBLING (SIZE 1 DAY)
-    GROUP BY USERID;
+CREATE STREAM IF NOT EXISTS points_transaction_log_rekeyed 
+    WITH (KAFKA_TOPIC = 'points_transaction_log_rekeyed') AS
+    SELECT *
+    FROM points_transaction_log
+    PARTITION BY USERID;
