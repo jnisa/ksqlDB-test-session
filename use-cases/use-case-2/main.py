@@ -66,6 +66,7 @@ client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query4.sql')))
 # create a stream with a timestamp column to use window functions
 client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query5.sql')))
 
+pdb.set_trace()
 
 # mock a data streaming process with the values collected previously
 for k in vals.keys():
@@ -76,4 +77,5 @@ for k in vals.keys():
 
 # run the queries that will allow us to get the expected outcomes
 client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'outcome1.sql')))
-client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'outcome2.sql')))
+# raising errors calling the query from here, but not when it comes directly from ksql client docker image
+# client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'outcome2.sql')))

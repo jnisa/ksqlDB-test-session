@@ -1,4 +1,4 @@
-## **Use Case 3 - Data Engineer Challenge**
+## **Use Case 3 - ksqldb Analysis**
 
 ### **1. Introduction**
 

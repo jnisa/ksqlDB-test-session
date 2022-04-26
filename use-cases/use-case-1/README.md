@@ -1,4 +1,4 @@
-## **Use Case 1 - Data Engineer Challenge**
+## **Use Case 1 - ksqldb Analysis**
 
 ### **1. Introduction**
 
@@ -74,18 +74,7 @@ SELECT
 Although it was necessary to clean all the tables created previously, as well as all the streams, and insert this query on the pipeline to be called from the ksql wrapper (which turns out to be a better option than running it directly on the ksql client).
 
 
-### **B. Points to retain**
 
-> a. The python wrapper needs some further improvements, but it can be useful to keep things as "pythonic" as possible. A point that is worth mentioning is the fact that this wrapper can be very peaky in what concerns the syntax of the query used;
 
-> b. Table-Stream Joins are not supported, only Stream-Table Joins;
-
-> c. It's mandatory to promote a column - whenever a new table is created - as the PRIMARY KEY on the query that creates the table;
-
-> d. Don't create multiple tables allocated to the same kafka topic, that will impact the joining operations. One topic per table;
-
-> e. Don't manage kafka topics (creation, deletion and so on..) on the kafka broker, do it through the ksql client.
-
-> f. To reach the **alternative solution presented in the previous topic**, we have reach to some conclusions that are important to highlight. ksql keeps storing new kafka topics even after you drop some streams. This issue might be mitigated with the usage of the Confluent Cloud platform, however it is important to state that even if you want to manage the topics from the ksql client, that is not possible. To make that happen you must access the kafka broker;
 
 
