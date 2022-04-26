@@ -63,6 +63,9 @@ client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query2.sql')))
 client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query3.sql')))
 client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query4.sql')))
 
+# create a stream with a timestamp column to use window functions
+client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'query5.sql')))
+
 
 # mock a data streaming process with the values collected previously
 for k in vals.keys():
@@ -71,4 +74,6 @@ for k in vals.keys():
 
     print('The stream %s has values already!' %(k))
 
-
+# run the queries that will allow us to get the expected outcomes
+client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'outcome1.sql')))
+client.ksql('%s' %(read_sql(os.path.join(cur_dir, 'ddl'), 'outcome2.sql')))
